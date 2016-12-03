@@ -1,5 +1,6 @@
 import sys
 from PIL import Image, ImageFilter
+from utils import show_in_console
 
 class Extractor:
     """Extract charaters from the image of an erg screen
@@ -45,13 +46,14 @@ class Extractor:
 
         """
         # transform the image
-        self.im = transform(im)
+        self.im = Extractor.transform(im)
 
-        # private attributes for the iteration
-        self.__chpos = 0
-        self.chars = find_chars(self.im)
+        # attributes for the iteration
+        self.chpos = 0
+        self.chars = Extractor.find_chars(self.im)
 
-    def __transform(im):
+    @staticmethod
+    def transform(im):
         """Rotate, convert to black and white, and resize the image
 
         Allows the user to specify the image rotation. Then crops
@@ -69,26 +71,27 @@ class Extractor:
         transformed = im.convert("L").rotate(-90, expand=True)
 
         # convert to black and white
-        bwdata = [0 if v <= BW_THRESHOLD else 255 for v in list(transformed.getdata())]
+        bwdata = [0 if v <= Extractor.BW_THRESHOLD else 255 for v in list(transformed.getdata())]
         transformed.putdata(bwdata)
 
         # allow the user to rotate the image
         while True:
-            show_in_console(transformed.resize(CONSOLE_SIZE, Image.BILINEAR))
+            show_in_console(transformed.resize(Extractor.CONSOLE_SIZE, Image.BILINEAR))
             rotate = int(input("Rotate: "))
             if (rotate == 0):
                 break
             transformed = transformed.rotate(rotate, expand=True)
 
         # crop and resize it to its final size
-        transformed = transformed.crop(INITAL_CROP).resize(FINAL_SIZE, Image.BILINEAR)
+        transformed = transformed.crop(Extractor.INITAL_CROP).resize(Extractor.FINAL_SIZE, Image.BILINEAR)
 
         # recompute the black and white data because rotation/resizing blurs it
-        bwdata = [0 if v <= BW_THRESHOLD else 255 for v in list(transformed.getdata())]
+        bwdata = [0 if v <= Extractor.BW_THRESHOLD else 255 for v in list(transformed.getdata())]
         transformed.putdata(bwdata)
 
         return transformed
 
+    @staticmethod
     def find_chars(im):
         """Finds suspected charaters in the image
 
@@ -133,14 +136,14 @@ class Extractor:
                 # check if in a line or not
                 if (inline):
                     # if in a line and below threshold, the line is over
-                    if (switches < SWITCH_THRESHOLD):
+                    if (switches < Extractor.SWITCH_THRESHOLD):
                         # remove small lines as they are probably garbage
                         if ((r-1) - top > 15):
                             lines.append((top, r-1))
                         inline = False
                 else:
                     # if not in line but above threshold, entering a line
-                    if (switches >= SWITCH_THRESHOLD):
+                    if (switches >= Extractor.SWITCH_THRESHOLD):
                         inline = True
                         top = r
 
@@ -175,7 +178,7 @@ class Extractor:
                     # check if in a character or not
                     if (inchar):
                         # if in a charater and below threshold, leave the charater
-                        if (count < BLACK_COUNT_THRESHOLD):
+                        if (count < Extractor.BLACK_COUNT_THRESHOLD):
 
                             # if the character is too wide, split it in half as it is likely
                             # a joined character
@@ -188,7 +191,7 @@ class Extractor:
                             inchar = False
                     else:
                         # if not in a character and above threshold, enter the character
-                        if (count >= BLACK_COUNT_THRESHOLD):
+                        if (count >= Extractor.BLACK_COUNT_THRESHOLD):
                             inchar = True
                             left = c
 
@@ -208,9 +211,9 @@ class Extractor:
         # check that this is not the last line
         if (self.chpos < len(self.chars)):
             # crop around the next character
-            c = self.im.crop(self.chars[chpos])
+            c = self.im.crop(self.chars[self.chpos])
             # increment to the next charater
-            chpos += 1
+            self.chpos += 1
             return c
         else:
             raise StopIteration()
