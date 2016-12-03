@@ -1,7 +1,48 @@
 import sys
 from PIL import Image, ImageFilter
 
-im = Image.open(sys.argv[1]).convert("L").rotate(-89, expand=True)
+class Extractor:
+    def __init__(self, im):
+        self.lines = []
+        self.chars = []
+        self.lnpos = 0
+        self.chpos = 0
+
+        self.im = im
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if (self.lnpos < len(lines)):
+            top, bottom = lines[lnpos]
+            left, right = chars[chpos]
+            c = self.im.crop((left, top, right, bottom))
+
+            chpos += 1
+            if (chpos == len(chars)):
+                chpos = 0
+                lnpos += 1
+        else:
+            raise StopIteration()
+
+def show_in_console(im):
+    pixels = ["#" if v == 0 else " " for v in list(im.getdata())]
+    width, height = im.size
+    pixels = [pixels[i * width:(i + 1) * width] for i in xrange(height)]
+    print("\n".join("".join(d for d in l) for l in pixels))
+
+im = Image.open(sys.argv[1]).convert("L").rotate(-90, expand=True)
+bwdata = [0 if v <= 150 else 255 for v in list(im.getdata())]
+im.putdata(bwdata)
+
+show_in_console(im.resize((128,170), Image.BILINEAR))
+rotate = int(input("Rotate: "))
+while (rotate != 0):
+    im = im.rotate(rotate, expand=True)
+    show_in_console(im.resize((128,170), Image.BILINEAR))
+    rotate = int(input("Rotate: "))
+
 im = im.crop((300,808,2048,2556)).resize((462,462), Image.BILINEAR)
 
 bwdata = [0 if v <= 150 else 255 for v in list(im.getdata())]
@@ -62,6 +103,6 @@ for top,bottom in lines:
 
     print(chars)
     for start, end in chars:
-        im.crop((start,top,end,bottom)).show()
+        show_in_console(im.crop((start,top,end,bottom)))
+        print("\n")
     break
-#print("".join("".join(str(d) for d in l) for l in pixels))
