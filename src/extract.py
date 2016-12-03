@@ -2,35 +2,57 @@ import sys
 from PIL import Image, ImageFilter
 
 class Extractor:
-    def __init__(self, im):
-        self.lines = []
-        self.chars = []
-        self.lnpos = 0
-        self.chpos = 0
+    """Extract charaters from the image of an erg screen
 
-        self.im = im
+    This class implements the iterator protocol allowing
+    the user to iterate through all charaters found in the image.
+    It returns the charaters as images.
+
+    This class will give the user the opportunity to adjust the rotation
+    of the image in the terminal before searching for charaters.
+
+    """
+
+    def __init__(self, im):
+        """Extractor constructor
+
+        Creating an Extractor will prompt the user in the terminal
+        to rotate the image.
+
+        Args:
+            im (Image): Image to extract from
+
+        """
+        # private attributes for the iteration
+        self.__lines = []
+        self.__chars = []
+        self.__lnpos = 0
+        self.__chpos = 0
+
+        # the image
+        self.__im = im
 
     def __iter__(self):
         return self
 
     def next(self):
+        # check that this is not the last line
         if (self.lnpos < len(lines)):
+            # crop out the next charact
             top, bottom = lines[lnpos]
             left, right = chars[chpos]
             c = self.im.crop((left, top, right, bottom))
 
+            # increment to the next charater
             chpos += 1
             if (chpos == len(chars)):
                 chpos = 0
-                lnpos += 1
+                lnpos += 1 # go to the next line if needed
+
+            return c
         else:
             raise StopIteration()
 
-def show_in_console(im):
-    pixels = ["#" if v == 0 else " " for v in list(im.getdata())]
-    width, height = im.size
-    pixels = [pixels[i * width:(i + 1) * width] for i in xrange(height)]
-    print("\n".join("".join(d for d in l) for l in pixels))
 
 im = Image.open(sys.argv[1]).convert("L").rotate(-90, expand=True)
 bwdata = [0 if v <= 150 else 255 for v in list(im.getdata())]
