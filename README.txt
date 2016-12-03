@@ -1,6 +1,6 @@
 Erik Kessler
 CSCI 373
-Project 1: Traffic Jam
+Final Project: Erg Screen OCR
 
 Program to solve the Traffic Jam puzzle. Goal is to minimize the number of moves.
 
