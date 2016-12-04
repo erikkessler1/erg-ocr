@@ -7,7 +7,8 @@ class Extractor:
 
     This class implements the iterator protocol allowing
     the user to iterate through all charaters found in the image.
-    It returns the charaters as images.
+    It returns the charaters as images. The iterator will also
+    return newline (\n) and tab (\t) characters to represent spaces.
 
     This class will give the user the opportunity to adjust the rotation
     of the image in the terminal before searching for charaters.
@@ -102,7 +103,7 @@ class Extractor:
 
         Returns:
             List of 4-tuples of the left, top, right, bottom coordinates
-            of suspected charaters
+            of suspected charaters or '\n','\t' to represent new lines and spaces
         """
 
         def get_lines(pixels):
@@ -157,7 +158,7 @@ class Extractor:
                 lines (list: (int, int)): top and bottom of lines
             Return:
                 List of 4-tuples of the left, top, right, bottom coordinates
-                of suspected charaters
+                of suspected charaters or '\n','\t' to represent new lines and spaces
             """
             chars = []
 
@@ -165,7 +166,7 @@ class Extractor:
             for top, bottom in lines:
                 left = 0
                 inchar = False
-                blank = 0
+                blank = 0 # count blank lines
 
                 # move from left to right through the line
                 for c in range(0, width):
@@ -195,12 +196,16 @@ class Extractor:
                         if (count >= Extractor.BLACK_COUNT_THRESHOLD):
                             inchar = True
                             left = c
+
+                            # add an indicator if the spacing between charaters is large
                             if (blank >= 10):
                                 chars.append('\t')
+
                             blank = 0
                         else:
                             blank += 1
 
+                # add a new line indicator
                 chars.append('\n')
 
             return chars
@@ -218,10 +223,11 @@ class Extractor:
     def next(self):
         # check that this is not the last line
         if (self.chpos < len(self.chars)):
-            # crop around the next character
+            # check if it is a spacing charater or coordinates
             if (self.chars[self.chpos] == '\n' or self.chars[self.chpos] == '\t'):
                 c = self.chars[self.chpos]
             else:
+                # if its coordinates, crop the image
                 c = self.im.crop(self.chars[self.chpos])
             # increment to the next charater
             self.chpos += 1
