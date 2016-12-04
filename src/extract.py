@@ -165,6 +165,7 @@ class Extractor:
             for top, bottom in lines:
                 left = 0
                 inchar = False
+                blank = 0
 
                 # move from left to right through the line
                 for c in range(0, width):
@@ -194,6 +195,13 @@ class Extractor:
                         if (count >= Extractor.BLACK_COUNT_THRESHOLD):
                             inchar = True
                             left = c
+                            if (blank >= 10):
+                                chars.append('\t')
+                            blank = 0
+                        else:
+                            blank += 1
+
+                chars.append('\n')
 
             return chars
 
@@ -211,7 +219,10 @@ class Extractor:
         # check that this is not the last line
         if (self.chpos < len(self.chars)):
             # crop around the next character
-            c = self.im.crop(self.chars[self.chpos])
+            if (self.chars[self.chpos] == '\n' or self.chars[self.chpos] == '\t'):
+                c = self.chars[self.chpos]
+            else:
+                c = self.im.crop(self.chars[self.chpos])
             # increment to the next charater
             self.chpos += 1
             return c
