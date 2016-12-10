@@ -18,3 +18,15 @@ def show_in_console(im):
     pixels = [pixels[i * width:(i + 1) * width] for i in xrange(height)]
 
     print("\n".join("".join(d for d in l) for l in pixels))
+
+def is_whitespace(item):
+    """Determine whether an item returned from extration is whitespace
+
+
+    Args:
+        item (Object): item to test
+
+    Returns:
+        True iff the item is a newline or tab character
+    """
+    return item == '\n' or item == '\t'

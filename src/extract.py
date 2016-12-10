@@ -1,6 +1,6 @@
 import sys
 from PIL import Image, ImageFilter
-from utils import show_in_console
+from utils import show_in_console, is_whitespace
 
 class Extractor:
     """Extract charaters from the image of an erg screen
@@ -224,7 +224,7 @@ class Extractor:
         # check that this is not the last line
         if (self.chpos < len(self.chars)):
             # check if it is a spacing charater or coordinates
-            if (self.chars[self.chpos] == '\n' or self.chars[self.chpos] == '\t'):
+            if (is_whitespace(self.chars[self.chpos])):
                 c = self.chars[self.chpos]
             else:
                 # if its coordinates, crop the image
