@@ -1,6 +1,7 @@
 import sys
 from PIL import Image, ImageFilter
 from utils import show_in_console, is_whitespace
+from simple_image import SimpleImage
 
 class Extractor:
     """Extract charaters from the image of an erg screen
@@ -228,7 +229,7 @@ class Extractor:
                 c = self.chars[self.chpos]
             else:
                 # if its coordinates, crop the image
-                c = self.im.crop(self.chars[self.chpos])
+                c = SimpleImage(self.im.crop(self.chars[self.chpos]))
             # increment to the next charater
             self.chpos += 1
             return c

@@ -11,4 +11,4 @@ for i in e:
     elif (i == '\t'):
         print '#'*80
     else:
-        show_in_console(i)
+        print i
