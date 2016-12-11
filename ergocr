@@ -15,7 +15,7 @@ HELP_TEXT = """Usage: ergocr <command>
 
 Commands:
 train <output-file> <training-image>    Train on an image
-read [k=3] <classifier> <image>         Read data from an image
+classify [k=3] <classifier> <image>     Read data from an image
 """
 
 TRAIN_HELP = """Usage: ergoct train <output-file> <training-image>
@@ -38,7 +38,7 @@ if (len(sys.argv) == 1):
     print HELP_TEXT
 elif (sys.argv[1] == "train"):
     train_command(sys.argv[2:])
-elif (sys.argv[1] == "read"):
+elif (sys.argv[1] == "classify"):
     read_command(sys.argv[2:])
 else:
     print HELP_TEXT

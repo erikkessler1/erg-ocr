@@ -27,10 +27,10 @@ Final Project: Erg Screen OCR
     This will ask you to classify each character the system
     extracts and will store the data in the output-file
 
-### READING ###
+### CLASSIFYING ###
 
   COMMAND:
-    ./ergocr read [k=3] <classifier> <image>
+    ./ergocr classify [k=3] <classifier> <image>
 
   DESCRIPTION:
     This runs the ML algorithm on the image using the specified classifier.
