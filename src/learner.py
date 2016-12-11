@@ -1,4 +1,3 @@
-from utils import is_whitespace
 from PIL import Image
 from extract import Extractor
 import os.path
@@ -9,7 +8,7 @@ with open("../training_data.txt", "a+") as f:
     im = Image.open(FILE_PATH)
     e = Extractor(im)
     for s_im in e:
-        if (not is_whitespace(s_im)):
+        if (not Extractor.is_whitespace(s_im)):
             print s_im
 
             digit = input("Input value: ")

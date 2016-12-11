@@ -1,0 +1,22 @@
+#!/usr/bin/python
+import sys
+from src.extract import Extractor
+
+"""
+CSCI 373 Final Project: ERG OCR
+
+Machine learning system for reading pictures of Concept 2 Erg screens
+to return data from the image in a computer-usable form.
+
+(c) 2016 Erik Kessler
+"""
+
+HELP_TEXT = """Usage: ergocr <command>
+
+Commands:
+train <output-file> <training-image>    Train on an image
+read [k=3] <classifier> <image>         Read data from an image
+"""
+
+if (len(sys.argv) == 1):
+    print HELP_TEXT

@@ -1,6 +1,5 @@
 import sys
 from PIL import Image, ImageFilter
-from utils import show_in_console, is_whitespace
 from simple_image import SimpleImage
 
 class Extractor:
@@ -8,7 +7,7 @@ class Extractor:
 
     This class implements the iterator protocol allowing
     the user to iterate through all charaters found in the image.
-    It returns the charaters as images. The iterator will also
+    It returns the charaters as SimpleImage. The iterator will also
     return newline (\n) and tab (\t) characters to represent spaces.
 
     This class will give the user the opportunity to adjust the rotation
@@ -78,7 +77,7 @@ class Extractor:
 
         # allow the user to rotate the image
         while True:
-            show_in_console(transformed.resize(Extractor.CONSOLE_SIZE, Image.BILINEAR))
+            print(SimpleImage(transformed.resize(Extractor.CONSOLE_SIZE, Image.BILINEAR)))
             rotate = int(input("Rotate: "))
             if (rotate == 0):
                 break
@@ -217,18 +216,36 @@ class Extractor:
 
         return get_chars(pixels, get_lines(pixels))
 
+    @staticmethod
+    def is_whitespace(item):
+        """Determine whether an item returned from extration is whitespace
+
+        Args:
+            item (Object): item to test
+
+        Returns:
+            True iff the item is a newline or tab character
+        """
+        return item == '\n' or item == '\t'
+
 
     def __iter__(self):
         return self
 
     def next(self):
+        """Returns the next item found in the image.
+
+        Returns:
+            Either '\n'/'\t' if the next item is whitespace or a SimpleImage
+            if there is a digit.
+        """
         # check that this is not the last line
         if (self.chpos < len(self.chars)):
             # check if it is a spacing charater or coordinates
-            if (is_whitespace(self.chars[self.chpos])):
+            if (Extractor.is_whitespace(self.chars[self.chpos])):
                 c = self.chars[self.chpos]
             else:
-                # if its coordinates, crop the image
+                # if its coordinates, crop the image anc create a SimpleImage
                 c = SimpleImage(self.im.crop(self.chars[self.chpos]))
             # increment to the next charater
             self.chpos += 1
