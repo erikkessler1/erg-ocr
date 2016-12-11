@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import sys
-from src.extract import Extractor
+import src.training as Trainer
 
 """
 CSCI 373 Final Project: ERG OCR
@@ -18,5 +18,27 @@ train <output-file> <training-image>    Train on an image
 read [k=3] <classifier> <image>         Read data from an image
 """
 
+TRAIN_HELP = """Usage: ergoct train <output-file> <training-image>
+
+    output-file:    file to save the classification data to
+    training-image: image file to classify
+"""
+
+def train_command(args):
+    if (len(args) is not 2):
+        print TRAIN_HELP
+    else:
+        Trainer.train(args[0], args[1])
+
+def read_command(args):
+    print args
+
+# dispatch to the correct method based on the command
 if (len(sys.argv) == 1):
+    print HELP_TEXT
+elif (sys.argv[1] == "train"):
+    train_command(sys.argv[2:])
+elif (sys.argv[1] == "read"):
+    read_command(sys.argv[2:])
+else:
     print HELP_TEXT
