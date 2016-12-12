@@ -9,19 +9,26 @@ class SimpleImage:
         pixels (list<list>): The pixels of the image
     """
 
-    def __init__(self, im):
+    def __init__(self, pixels):
         """SimpleImage constructor
 
         Args:
-            im (Image): The image to convert to a binary representation
+            pixels (list<list>): The pixels of the image
         """
+        self.pixels = pixels
+
+    @classmethod
+    def fromImage(cls, im):
         pixels = ["#" if v == 0 else " " for v in list(im.getdata())]
         width, height = im.size
 
         # make each row a list
         pixels = [pixels[i * width:(i + 1) * width] for i in xrange(height)]
-        self.pixels = pixels
+        return cls(pixels)
 
+    @classmethod
+    def fromString(cls, str):
+        return cls([list(l) for l in str.split('\n')])
 
     def __str__(self):
         return "\n".join("".join(d for d in l) for l in self.pixels)

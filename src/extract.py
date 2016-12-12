@@ -77,7 +77,7 @@ class Extractor:
 
         # allow the user to rotate the image
         while True:
-            print(SimpleImage(transformed.resize(Extractor.CONSOLE_SIZE, Image.BILINEAR)))
+            print(SimpleImage.fromImage(transformed.resize(Extractor.CONSOLE_SIZE, Image.BILINEAR)))
             rotate = int(input("Rotate: "))
             if (rotate == 0):
                 break
@@ -246,7 +246,7 @@ class Extractor:
                 c = self.chars[self.chpos]
             else:
                 # if its coordinates, crop the image anc create a SimpleImage
-                c = SimpleImage(self.im.crop(self.chars[self.chpos]))
+                c = SimpleImage.fromImage(self.im.crop(self.chars[self.chpos]))
             # increment to the next charater
             self.chpos += 1
             return c
