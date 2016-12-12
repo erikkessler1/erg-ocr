@@ -53,12 +53,11 @@ def classify_digit(k, classifier_path, image):
     Returns:
         The symbol that the classifier determines the image to be
     """
-    def find_sim(template_data, image):
+    def find_sim(template_data):
         """Computes the similarity between the template and the image.
 
         Args:
             template_data (Match): regex match that holds the 'data' and 'digit'
-            image (Image): the image to compare to
 
         Returns:
             A tuple of the classification and the similarity.
@@ -75,7 +74,7 @@ def classify_digit(k, classifier_path, image):
         regex = re.compile(PATTERN)
 
         # print the nearest neighbor
-        print find_nearest(k, [find_sim(match, image) for match in regex.finditer(text)]),
+        print find_nearest(k, [find_sim(match) for match in regex.finditer(text)]),
 
 def classify(k, classifier_path, image):
     im = Image.open(image)
