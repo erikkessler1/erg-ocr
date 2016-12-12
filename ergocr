@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 import src.training as Trainer
+import src.classifier as Classifier
 
 """
 CSCI 373 Final Project: ERG OCR
@@ -30,8 +31,13 @@ def train_command(args):
     else:
         Trainer.train(args[0], args[1])
 
-def read_command(args):
-    print args
+def classify_command(args):
+    if (len(args) is 2):
+        Classifier.classify(3, args[0], args[1])
+    elif (len(args) is 3):
+        Classifier.classify(int(args[0]), args[1], args[2])
+    else:
+        print CLASSSIFY_HELP
 
 # dispatch to the correct method based on the command
 if (len(sys.argv) == 1):
@@ -39,6 +45,6 @@ if (len(sys.argv) == 1):
 elif (sys.argv[1] == "train"):
     train_command(sys.argv[2:])
 elif (sys.argv[1] == "classify"):
-    read_command(sys.argv[2:])
+    classify_command(sys.argv[2:])
 else:
     print HELP_TEXT

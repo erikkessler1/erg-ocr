@@ -1,5 +1,7 @@
 import re
 from simple_image import SimpleImage
+from extract import Extractor
+from PIL import Image
 
 PATTERN = r"""Digit: (?P<digit>.)
 File: (?P<file>.*)
@@ -40,7 +42,7 @@ def similarity(s_im1, s_im2):
                 pass
     return count
 
-def classify(k, classifier_path, image):
+def classify_digit(k, classifier_path, image):
     """Classify an image
 
     Args:
@@ -73,4 +75,16 @@ def classify(k, classifier_path, image):
         regex = re.compile(PATTERN)
 
         # print the nearest neighbor
-        print findNearest(k, [find_sim(match, image) for match in regex.finditer(text)])
+        print find_nearest(k, [find_sim(match, image) for match in regex.finditer(text)]),
+
+def classify(k, classifier_path, image):
+    im = Image.open(image)
+    e = Extractor(im)
+
+    print '#'*37 + ' DATA ' + '#'*37
+    for s_im in e:
+        if (Extractor.is_whitespace(s_im)):
+            print s_im,
+        else:
+            classify_digit(k, classifier_path, s_im)
+    print '#'*80
