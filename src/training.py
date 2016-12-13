@@ -41,7 +41,11 @@ def train(classifier_path, image_path):
 
                 # print the image and have the user classify it
                 print s_im
-                digit = input("Input value: ")
+                digit = input("Input value ('s' to skip): ")
+
+                # skip this digit
+                if (digit == 's'):
+                    continue
 
                 # write the data to the file
                 f.write(CLASSIFIER_FORMAT.format(digit, im_name, str(s_im)))

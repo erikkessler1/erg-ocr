@@ -15,8 +15,11 @@ Final Project: Erg Screen OCR
 
   There are test images in "/images/test/" to test the system on.
 
-  Note: if you don't have python installed at /usr/bin/python you can
-        run by replacing "./ergocr" with  "python ergocr"
+  Notes:
+   - When the system asks you to rotate, you should try to make the bottom of the
+     white box straight. Enter a rotaion of 0 when done
+   - If you don't have python installed at /usr/bin/python you can
+     run by replacing "./ergocr" with  "python ergocr"
 
 ### TRAINING ###
 
@@ -25,7 +28,11 @@ Final Project: Erg Screen OCR
 
   DESCRIPTION:
     This will ask you to classify each character the system
-    extracts and will store the data in the output-file
+    extracts and will store the data in the output-file.
+
+    Notes:
+     - For : and . you have to type ':' and '.'
+     - You can skip classifying a digit with 's'
 
 ### CLASSIFYING ###
 

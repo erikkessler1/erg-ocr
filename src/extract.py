@@ -78,7 +78,7 @@ class Extractor:
         # allow the user to rotate the image
         while True:
             print(SimpleImage.fromImage(transformed.resize(Extractor.CONSOLE_SIZE, Image.BILINEAR)))
-            rotate = int(input("Rotate: "))
+            rotate = int(input("Rotate CCW (0 to continue): "))
             if (rotate == 0):
                 break
             transformed = transformed.rotate(rotate, expand=True)
