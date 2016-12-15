@@ -10,14 +10,19 @@ Final Project: Erg Screen OCR
   The ML algorithm used is a kNN algorithm. You can specify k when running
   the algorithm.
 
-  There is a pre-trained classifier in training_data.txt. Although you
+  There are a pre-trained classifiers in the training_data directory. Although you
   could create your own classifier using the "train" command.
 
-  There are test images in "/images/test/" to test the system on.
+  There are images in the images directory to run the system on.
+
+  Example:
+  $ ./ergocr classify 3 training_data/lo_04.txt images/dataset1/04.jpg
+     - When asked for the rotation put in 1 then 0
+     - Compare the output to the image at "images/dataset1/04.jpg"
 
   Notes:
    - When the system asks you to rotate, you should try to make the bottom of the
-     white box straight. Enter a rotaion of 0 when done
+     white box straight. Enter a rotation of 0 when done
    - If you don't have python installed at /usr/bin/python you can
      run by replacing "./ergocr" with  "python ergocr"
 
