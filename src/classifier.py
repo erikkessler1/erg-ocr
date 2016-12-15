@@ -2,6 +2,7 @@ import re
 from simple_image import SimpleImage
 from extract import Extractor
 from PIL import Image
+import datetime
 
 PATTERN = r"""Digit: (?P<digit>.)
 File: (?P<file>.*)
@@ -80,6 +81,7 @@ def classify(k, classifier_path, image):
     im = Image.open(image)
     e = Extractor(im)
 
+    start = datetime.datetime.now()
     print '#'*37 + ' DATA ' + '#'*37
     for s_im in e:
         if (Extractor.is_whitespace(s_im)):
@@ -87,3 +89,5 @@ def classify(k, classifier_path, image):
         else:
             classify_digit(k, classifier_path, s_im)
     print '#'*80
+    end = datetime.datetime.now()
+    print '### TIME: {} sec###'.format((end-start).total_seconds())
